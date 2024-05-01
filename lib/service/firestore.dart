@@ -2,6 +2,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+import '../model/user.dart';
+
 class FirestoreService{
 
   String? uid;
@@ -51,6 +53,13 @@ class FirestoreService{
     final presenceStream = presences.orderBy('timestamp', descending:true).snapshots();
     return presenceStream;
 
+  }
+
+  static Future<Users> getUserData(String userId) async {
+    DocumentSnapshot userSnapshot =
+    await FirebaseFirestore.instance.collection('users').doc(userId).get();
+    Map<String, dynamic> userData = userSnapshot.data() as Map<String, dynamic>;
+    return Users(name: userData['first name'], age: userData['age']);
   }
 
 
