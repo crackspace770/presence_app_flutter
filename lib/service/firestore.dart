@@ -59,7 +59,7 @@ class FirestoreService{
 
   Future<void> addPresence({
     required File imageFile,
-    required bool status,
+    required String status,
     required String id,
     required String info,
     required String name,
@@ -88,7 +88,7 @@ class FirestoreService{
 
   Future<void> addUserPresence({
     required File imageFile,
-    required bool status,
+    required String status,
     required String id,
     required String info,
     required String name,
@@ -118,7 +118,7 @@ class FirestoreService{
 
 
   Stream<QuerySnapshot> getPresences() {
-    final presenceStream = presences.orderBy('timestamp', descending:true).snapshots();
+    final presenceStream = userPresences.orderBy('timestamp', descending:true).snapshots();
     return presenceStream;
 
   }

@@ -210,7 +210,7 @@ class _PresencePageState extends State<PresencePage> {
                 ),
               ),
 
-              SizedBox(height: 25),
+              const SizedBox(height: 25),
 
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 25.0),
@@ -219,8 +219,7 @@ class _PresencePageState extends State<PresencePage> {
                     if (imageFile != null && selectedStatus != null) {
 
                       List<int> imageBytes = imageFile!.readAsBytesSync();
-                      String photo = base64Encode(imageBytes);
-                      bool status = selectedStatus == 'Check In'; // Example logic for status
+                      String status = selectedStatus ?? '';
 
                       try {
                         await firestoreService.addPresence(
@@ -238,6 +237,12 @@ class _PresencePageState extends State<PresencePage> {
                           id: idController.text,
                           info: keteranganController.text,
                           name: nameController.text,
+                        );
+
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('Presence Added.'),
+                          ),
                         );
 
                         // Optionally, show a success message or navigate to another screen
@@ -287,14 +292,6 @@ class _PresencePageState extends State<PresencePage> {
   }
 }
 
-_onCameraView () async {
-
-  final isAndroid = defaultTargetPlatform == TargetPlatform.android;
-  final isIos = defaultTargetPlatform == TargetPlatform.iOS;
-  final isNotMobile = !(isAndroid || isIos);
-  if(isNotMobile) return;
-
-}
 
 
 
