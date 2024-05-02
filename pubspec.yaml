@@ -41,7 +41,7 @@ dependencies:
   firebase_ui_firestore: ^1.6.3
   cloud_firestore: ^4.15.8
   image_picker: ^0.8.9
-
+  camera: ^0.10.5+2
 
 
 
