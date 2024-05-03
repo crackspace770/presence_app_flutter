@@ -5,6 +5,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class SettingPage extends StatelessWidget {
   const SettingPage({Key? key}) : super(key: key);
 
+  static const routeName ="/setting_page";
+
   @override
   Widget build(BuildContext context) {
     final User? user = FirebaseAuth.instance.currentUser;

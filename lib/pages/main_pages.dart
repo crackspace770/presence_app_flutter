@@ -4,9 +4,16 @@ import 'package:flutter/material.dart';
 import 'auth/auth_page.dart';
 import 'home_page.dart';
 
-class MainPage extends StatelessWidget {
+class MainPage extends StatefulWidget {
+  static const routeName="/main_page";
+
   const MainPage({super.key});
 
+  @override
+  State<MainPage> createState() => _MainPageState();
+}
+
+class _MainPageState extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

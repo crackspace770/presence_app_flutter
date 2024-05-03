@@ -9,6 +9,9 @@ import 'package:image_picker/image_picker.dart';
 import 'package:presence_app/service/firestore.dart';
 
 class PresencePage extends StatefulWidget {
+
+  static const routeName = "/presence_page";
+
   const PresencePage({Key? key}) : super(key: key);
 
   @override
