@@ -248,6 +248,9 @@ class _PresencePageState extends State<PresencePage> {
                           ),
                         );
 
+                        // Navigate back to the previous page
+                        Navigator.pop(context);
+
                         // Optionally, show a success message or navigate to another screen
                       } catch (error) {
                         // Handle error

@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:presence_app/pages/main_pages.dart';
+import 'package:presence_app/pages/presence_history_page.dart';
 import 'package:presence_app/pages/presence_page.dart';
 import 'package:presence_app/pages/setting_page.dart';
 
@@ -33,6 +34,7 @@ class MyApp extends StatelessWidget {
       initialRoute: MainPage.routeName,
       routes: {
         MainPage.routeName: (context) => const MainPage(),
+        PresenceHistoryPage.routeName: (context) => const PresenceHistoryPage(),
         SettingPage.routeName: (context) => const SettingPage(),
         PresencePage.routeName: (context) => const PresencePage()
       },

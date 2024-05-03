@@ -6,6 +6,8 @@ import '../service/auth_service.dart';
 import '../service/firestore.dart';
 
 class PresenceHistoryPage extends StatefulWidget {
+  static const routeName ="/presence_history_page";
+
   const PresenceHistoryPage({super.key});
 
   @override
