@@ -34,6 +34,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
       // Get UID of the newly created user
       String uid = userCredential.user!.uid;
+      String profilePictureUrl = 'https://ui-avatars.com/api/?background=8692F7&color=fff&size=100&rounded=true&name=${firstNameController.text.trim()}+${lastNameController.text.trim()}';
 
       //add user detail
       adduserDetail(
@@ -42,19 +43,26 @@ class _RegisterPageState extends State<RegisterPage> {
         lastNameController.text.trim(),
         emailController.text.trim(),
         int.parse(ageController.text.trim()),
+        profilePictureUrl
+
 
       );
     }
   }
 
   Future adduserDetail(
-      String uid, String firstName, String lastName, String email, int age) async {
+      String uid, String firstName, String lastName, String email, int age, String photo) async {
+    // Generate profile picture URL using the API and user's name
+    String profilePictureUrl = 'https://ui-avatars.com/api/?background=8692F7&color=fff&size=100&rounded=true&name=$firstName+$lastName';
+
+    // Add user details to Firestore with the generated profile picture URL
     await FirebaseFirestore.instance.collection('users').add({
       'uid': uid,
       'first_name': firstName,
       'last_name': lastName,
       'email': email,
       'age': age,
+      'photo_profile' : profilePictureUrl, // Set profile picture URL
     });
   }
 

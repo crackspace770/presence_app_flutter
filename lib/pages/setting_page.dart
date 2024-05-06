@@ -12,9 +12,7 @@ class SettingPage extends StatelessWidget {
     final User? user = FirebaseAuth.instance.currentUser;
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Profile"),
-      ),
+
       body: FutureBuilder<QuerySnapshot>(
         future: FirebaseFirestore.instance.collection('users').where('uid', isEqualTo: user?.uid).get(),
         // Query the collection based on the user's UID
@@ -38,23 +36,19 @@ class SettingPage extends StatelessWidget {
           String firstName = userData?['first_name'] ?? 'Unknown';
           String idPegawai = userData?['id_pegawai'] ?? 'Unknown';
           String lastName = userData?['last_name'] ?? 'Unknown';
+          String profilePictureUrl = userData?['photo_profile']?? 'Unknown';
 
           return Center(
             child: Column(
 
               children: [
                 SizedBox(height: 15),
-                Container(
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    border: Border.all(color: Colors.blue),
-                  ),
-                  child: Icon(
-                    Icons.person,
-                    color: Colors.black,
-                    size: 50,
-                  ),
-                ),
+                profilePictureUrl.isNotEmpty
+                    ? CircleAvatar(
+                  radius: 50,
+                  backgroundImage: NetworkImage(profilePictureUrl),
+                )
+                    : Container(),
                 SizedBox(height: 15),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,

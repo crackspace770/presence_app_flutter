@@ -49,6 +49,7 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("PresenceApp"),
+        centerTitle: true,
         actions: [
           GestureDetector(
             onTap: logout,
@@ -70,8 +71,11 @@ class _HomePageState extends State<HomePage> {
 
       body: _listWidget[_bottomNavIndex],
       bottomNavigationBar: BottomNavigationBar(
+
         selectedItemColor: Colors.purple,
         currentIndex: _bottomNavIndex,
+        backgroundColor: Colors.white54,
+
         items: _bottomNavBarItems,
         onTap: (selected) {
           setState(() {

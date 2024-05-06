@@ -221,6 +221,16 @@ class _PresencePageState extends State<PresencePage> {
                   onTap: () async {
                     if (imageFile != null && selectedStatus != null) {
 
+                      showDialog(
+                        context: context,
+                        barrierDismissible: false, // Prevent users from dismissing the dialog
+                        builder: (BuildContext context) {
+                          return const Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        },
+                      );
+
                       List<int> imageBytes = imageFile!.readAsBytesSync();
                       String status = selectedStatus ?? '';
 
@@ -241,6 +251,7 @@ class _PresencePageState extends State<PresencePage> {
                           info: keteranganController.text,
                           name: nameController.text,
                         );
+
 
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
