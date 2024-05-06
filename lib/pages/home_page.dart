@@ -8,6 +8,9 @@ import 'package:presence_app/service/firestore.dart';
 import '../service/auth_service.dart';
 
 class HomePage extends StatefulWidget {
+
+  static const routeName ="/home_page";
+
   const HomePage({Key? key}) : super(key: key);
 
   @override

@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:intl/intl.dart';
 
 import '../model/user.dart';
 
@@ -70,6 +71,13 @@ class FirestoreService{
       // Upload the image to Firebase Storage
       String photoURL = await _uploadImageToStorage(imageFile, userId);
 
+      // Get the current timestamp
+      DateTime now = DateTime.now();
+
+      // Format the timestamp
+      String formattedTime = DateFormat.Hm().format(now); // HH:MM format
+      String formattedDate = DateFormat('dd.MM.yy').format(now); // DD:MM:YY format
+
       // Add presence data to Firestore with the photo URL
       await presences.add({
         'id': id,
@@ -77,8 +85,8 @@ class FirestoreService{
         'info': info,
         'photo': photoURL,
         'status': status,
-        'timestamp': Timestamp.now(),
-        'date': DateTime.now(),
+        'timestamp': formattedTime,
+        'date': formattedDate,
       });
     } catch (error) {
       print('Error adding presence: $error');
@@ -99,6 +107,13 @@ class FirestoreService{
       // Upload the image to Firebase Storage
       String photoURL = await _uploadImageToStorage(imageFile, userId);
 
+      // Get the current timestamp
+      DateTime now = DateTime.now();
+
+      // Format the timestamp
+      String formattedTime = DateFormat.Hm().format(now); // HH:MM format
+      String formattedDate = DateFormat('dd.MM.yy').format(now); // DD:MM:YY format
+
       // Add presence data to Firestore with the photo URL
       await userPresences.add({
         'id': id,
@@ -106,8 +121,8 @@ class FirestoreService{
         'info': info,
         'photo': photoURL,
         'status': status,
-        'timestamp': Timestamp.now(),
-        'date': DateTime.now(),
+        'timestamp': formattedTime,
+        'date': formattedDate,
       });
     } catch (error) {
       print('Error adding presence: $error');

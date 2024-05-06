@@ -14,7 +14,8 @@ class PresenceHistory extends StatelessWidget {
     DocumentSnapshot document = presence as DocumentSnapshot<Object?>;
     Map<String, dynamic> data = document.data() as Map<String, dynamic>;
     String presenceStatus = data['status'].toString();
-    DateTime presenceTime = (data['date'] as Timestamp ).toDate();
+    String presenceTime = data['timestamp'].toString() ;
+    String presenceDate = data['date'].toString() ;
 
     return Padding(
       padding: EdgeInsets.only(left: 25.0, right: 25.0, bottom: 10),
@@ -32,12 +33,13 @@ class PresenceHistory extends StatelessWidget {
               Icon(Icons.circle,color: _getStatusColor(presenceStatus)),
               Text(presenceStatus),
               Text(presenceTime.toString()),
+              Text(presenceDate.toString())
             ],
 
           ),
         ),
       ),
-    );;
+    );
   }
 }
 
