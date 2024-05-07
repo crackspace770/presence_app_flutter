@@ -231,7 +231,6 @@ class _PresencePageState extends State<PresencePage> {
                         },
                       );
 
-                      List<int> imageBytes = imageFile!.readAsBytesSync();
                       String status = selectedStatus ?? '';
 
                       try {
