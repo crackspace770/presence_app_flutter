@@ -2,6 +2,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import '../service/auth_service.dart';
 import 'admin/admin_page.dart';
 import 'auth/auth_page.dart';
 import 'home_page.dart';
@@ -16,7 +17,7 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
-  final User? user = FirebaseAuth.instance.currentUser;
+  final AuthService _authService = AuthService();
 
   @override
   Widget build(BuildContext context) {
@@ -25,29 +26,35 @@ class _MainPageState extends State<MainPage> {
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            return FutureBuilder<QuerySnapshot>(
-              future: FirebaseFirestore.instance.collection('users').where('uid', isEqualTo: user?.uid).get(),
+            return FutureBuilder<QuerySnapshot?>(
+              future: _authService.getUserRole(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return Center(child: CircularProgressIndicator());
                 } else if (snapshot.hasError) {
                   return Center(child: Text('Error: ${snapshot.error}'));
                 } else {
-                  // Check if any documents are found
-                  if (snapshot.data!.docs.isNotEmpty) {
-                    var document = snapshot.data!.docs.first;
+                  QuerySnapshot? userDocs = snapshot.data;
+                  if (userDocs != null && userDocs.docs.isNotEmpty) {
+                    var document = userDocs.docs.first;
                     print('Document data: ${document.data()}'); // Print document data
-                    bool isAdmin = document['isAdmin'] ?? false;
-                    print('isAdmin: $isAdmin'); // Print isAdmin value
-                    if (isAdmin) {
-                      // Redirect to AdminPage
+                    String? role = document['role'];
+                    if (role == 'admin') {
+                      // Redirect to Teacher page
+                      print('Redirecting to Admin...');
                       return AdminPage();
-                    } else {
-                      // Redirect to HomePage
+                    } else if (role == 'employee') {
+                      // Redirect to Student page
+                      print('Redirecting to Employee...');
                       return HomePage();
+                    } else {
+                      print('Unknown role: $role');
+                      // Handle unknown role here
+                      return Center(child: Text('Unknown role'));
                     }
                   } else {
                     // Handle case when no documents are found
+                    print('No user document found.');
                     return Center(child: Text('No user data found'));
                   }
                 }
