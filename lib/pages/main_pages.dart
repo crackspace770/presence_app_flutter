@@ -30,7 +30,7 @@ class _MainPageState extends State<MainPage> {
               future: _authService.getUserRole(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Center(child: CircularProgressIndicator());
+                  return const Center(child: CircularProgressIndicator());
                 } else if (snapshot.hasError) {
                   return Center(child: Text('Error: ${snapshot.error}'));
                 } else {
@@ -42,20 +42,20 @@ class _MainPageState extends State<MainPage> {
                     if (role == 'admin') {
                       // Redirect to Teacher page
                       print('Redirecting to Admin...');
-                      return AdminPage();
+                      return const AdminPage();
                     } else if (role == 'employee') {
                       // Redirect to Student page
                       print('Redirecting to Employee...');
-                      return HomePage();
+                      return const HomePage();
                     } else {
                       print('Unknown role: $role');
                       // Handle unknown role here
-                      return Center(child: Text('Unknown role'));
+                      return const Center(child: Text('Unknown role'));
                     }
                   } else {
                     // Handle case when no documents are found
                     print('No user document found.');
-                    return Center(child: Text('No user data found'));
+                    return const Center(child: Text('No user data found'));
                   }
                 }
               },

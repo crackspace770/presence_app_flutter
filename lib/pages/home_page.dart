@@ -19,8 +19,6 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
 
-  final FirestoreService _firestoreService = FirestoreService();
-  final AuthService _authService = AuthService();
 
   void logout() {
     final _auth = AuthService();

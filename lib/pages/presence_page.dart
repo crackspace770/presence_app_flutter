@@ -78,15 +78,15 @@ class _PresencePageState extends State<PresencePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Presence"),
+        title: const Text("Presence"),
       ),
       body: SingleChildScrollView(
         child: Center(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Padding(
-                padding: const EdgeInsets.only(left: 25.0),
+              const Padding(
+                padding: EdgeInsets.only(left: 25.0),
                 child: Text("Ambil Foto selfie"),
               ),
 
@@ -116,7 +116,8 @@ class _PresencePageState extends State<PresencePage> {
                 ),
               ),
 
-              SizedBox(height: 15),
+              const SizedBox(height: 15),
+
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 25.0),
                 child: Container(
@@ -148,7 +149,7 @@ class _PresencePageState extends State<PresencePage> {
                     child: TextField(
                       controller: idController,
                       enabled: false,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                           hintText: "ID Pegawai", border: InputBorder.none),
                     ),
                   ),

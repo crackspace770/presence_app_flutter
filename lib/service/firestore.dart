@@ -15,6 +15,9 @@ class FirestoreService{
   late CollectionReference userPresences;
 
   final FirebaseStorage _storage = FirebaseStorage.instance;
+  final CollectionReference user = FirebaseFirestore.instance.collection('users');
+
+  
 
   Future<String> _uploadImageToStorage(File imageFile, String userId) async {
     try {
@@ -37,6 +40,33 @@ class FirestoreService{
     }
   }
 
+  Future<String> _uploadImagePhoto(File imageFile) async {
+    try {
+      // Create a reference to the location you want to upload to in Firebase Storage
+      Reference storageReference = _storage.ref().child('photo/profile_pictures/');
+
+      // Upload the file to Firebase Storage
+      UploadTask uploadTask = storageReference.putFile(imageFile);
+
+      // Wait for the upload to complete
+      await uploadTask;
+
+      // Get the download URL of the uploaded file
+      String downloadURL = await storageReference.getDownloadURL();
+
+      return downloadURL;
+    } catch (e) {
+      print('Error uploading image to Firebase Storage: $e');
+      throw e;
+    }
+  }
+  
+  Stream<QuerySnapshot> getUserStream() {
+    final userStream = user.orderBy('first_name', descending: true).snapshots();
+
+    return userStream;
+  }
+
   FirestoreService() {
     presences = FirebaseFirestore.instance.collection('presence');
     init();
@@ -57,6 +87,46 @@ class FirestoreService{
     }
   }
 
+  Future<void> addUser({
+    required File imageFile,
+    required String age,
+    required String id,
+    required String role,
+    required String firstName,
+    required String lastName,
+    required String email,
+    required String password
+  }) async{
+    try {
+
+
+      // Upload the image to Firebase Storage
+      String photoURL = await _uploadImagePhoto(imageFile);
+
+      // Get the current timestamp
+      DateTime now = DateTime.now();
+
+      // Format the timestamp
+      String formattedTime = DateFormat.Hm().format(now); // HH:MM format
+      String formattedDate = DateFormat('dd.MM.yy').format(now); // DD:MM:YY format
+
+      // Add presence data to Firestore with the photo URL
+      await presences.add({
+        'id': id,
+        'name': firstName,
+        'last_name':lastName,
+        'role': role,
+        'photo_profile': photoURL,
+        'email': email,
+        'password':password,
+        'age':age
+
+      });
+    } catch (error) {
+      print('Error adding presence: $error');
+      throw error;
+    }
+  }
 
   Future<void> addPresence({
     required File imageFile,
@@ -137,6 +207,8 @@ class FirestoreService{
     return presenceStream;
 
   }
+
+
 
   static Future<Users> getUserData(String userId) async {
     DocumentSnapshot userSnapshot =
