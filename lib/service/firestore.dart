@@ -88,6 +88,7 @@ class FirestoreService{
   }
 
   Future<void> addUser({
+    required String uid,
     required File imageFile,
     required String age,
     required String id,
@@ -95,7 +96,8 @@ class FirestoreService{
     required String firstName,
     required String lastName,
     required String email,
-    required String password
+    required String password,
+
   }) async{
     try {
 
@@ -106,20 +108,19 @@ class FirestoreService{
       // Get the current timestamp
       DateTime now = DateTime.now();
 
-      // Format the timestamp
-      String formattedTime = DateFormat.Hm().format(now); // HH:MM format
-      String formattedDate = DateFormat('dd.MM.yy').format(now); // DD:MM:YY format
+
 
       // Add presence data to Firestore with the photo URL
-      await presences.add({
+      await user.add({
         'id': id,
-        'name': firstName,
+        'first_name': firstName,
         'last_name':lastName,
         'role': role,
         'photo_profile': photoURL,
         'email': email,
         'password':password,
-        'age':age
+        'age':age,
+        'uid':uid
 
       });
     } catch (error) {

@@ -26,17 +26,24 @@ class _RegisterPageState extends State<RegisterPage> {
     if(passwordIsConfirmed() ) {
 
       //create user
-      UserCredential userCredential =
       await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: emailController.text.trim(),
         password: passwordController.text.trim(),
       );
 
       // Get UID of the newly created user
-      String uid = userCredential.user!.uid;
+      String uid = FirebaseAuth.instance.currentUser!.uid;
       String profilePictureUrl = 'https://ui-avatars.com/api/?background=8692F7&color=fff&size=100&rounded=true&name=${firstNameController.text.trim()}+${lastNameController.text.trim()}';
 
       bool isAdmin = false;
+
+      // Clear form fields
+      firstNameController.clear();
+      lastNameController.clear();
+      ageController.clear();
+      emailController.clear();
+      confirmPasswordController.clear();
+      passwordController.clear();
 
       //add user detail
       adduserDetail(

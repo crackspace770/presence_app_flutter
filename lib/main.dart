@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:presence_app/pages/admin/add_employee_page.dart';
+import 'package:presence_app/pages/admin/employee_detail_page.dart';
 import 'package:presence_app/pages/main_pages.dart';
 import 'package:presence_app/pages/presence_history_page.dart';
 import 'package:presence_app/pages/presence_page.dart';
@@ -38,7 +39,8 @@ class MyApp extends StatelessWidget {
         PresenceHistoryPage.routeName: (context) => const PresenceHistoryPage(),
         SettingPage.routeName: (context) => const SettingPage(),
         PresencePage.routeName: (context) => const PresencePage(),
-        AddEmployeePage.routeName: (context) => const AddEmployeePage()
+        AddEmployeePage.routeName: (context) => const AddEmployeePage(),
+        EmployeeDetailPage.routeName: (context) => const EmployeeDetailPage()
       },
       //home: const MainPage(),
     );

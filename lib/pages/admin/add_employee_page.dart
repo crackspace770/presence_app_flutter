@@ -1,8 +1,10 @@
 import 'dart:io';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:presence_app/widget/MyEditText.dart';
+import 'package:presence_app/widget/add_image.dart';
+import 'package:presence_app/widget/my_edit_text.dart';
 
 import '../../service/firestore.dart';
 
@@ -26,18 +28,6 @@ class _AddEmployeePageState extends State<AddEmployeePage> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
 
-  @override
-  void dispose() {
-    emailController.dispose();
-    passwordController.dispose();
-    firstNameController.dispose();
-    idController.dispose();
-    lastNameController.dispose();
-    idController.dispose();
-    roleController.dispose();
-    ageController.dispose();
-    super.dispose();
-  }
 
   final FirestoreService firestoreService = FirestoreService();
   File? imageFile; // Variable to store the captured image
@@ -53,9 +43,9 @@ class _AddEmployeePageState extends State<AddEmployeePage> {
     }
   }
 
-  Future addUser() async{
+  Future<void> addUser() async {
     if (
-    //to make sure every form is filled
+    // Check if all required fields are filled
     imageFile != null &&
         firstNameController.text.isNotEmpty &&
         lastNameController.text.isNotEmpty &&
@@ -65,42 +55,70 @@ class _AddEmployeePageState extends State<AddEmployeePage> {
         emailController.text.isNotEmpty &&
         passwordController.text.isNotEmpty
     ) {
-
-      //show loading indicator
-      showDialog(
-        context: context,
-        barrierDismissible: false, // Prevent users from dismissing the dialog
-        builder: (BuildContext context) {
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
-        },
-      );
-
-      //upload to firestore
       try {
-        await firestoreService.addUser(
-            imageFile: imageFile!,
-            age: ageController.text,
-            id: idController.text,
-            role: roleController.text,
-            firstName: firstNameController.text,
-            lastName: lastNameController.text,
-            email: emailController.text,
-            password: passwordController.text
+        // Check if the email is already registered
+        List<String> signInMethods = await FirebaseAuth.instance.fetchSignInMethodsForEmail(emailController.text.trim());
+        if (signInMethods.isNotEmpty) {
+          // Email already exists, show error message
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Email already registered. Please use a different email.'),
+            ),
+          );
+          return; // Stop execution
+        }
+
+        // Create the user without automatically signing in
+        UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
+          email: emailController.text.trim(),
+          password: passwordController.text.trim(),
         );
 
-        //if success
+        // Get UID of the newly created user
+        String uid = userCredential.user!.uid;
+
+        //show loading indicator
+        showDialog(
+          context: context,
+          barrierDismissible: false, // Prevent users from dismissing the dialog
+          builder: (BuildContext context) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          },
+        );
+
+        // Upload user data to Firestore
+        await firestoreService.addUser(
+          imageFile: imageFile!,
+          age: ageController.text,
+          id: idController.text,
+          role: roleController.text,
+          firstName: firstNameController.text,
+          lastName: lastNameController.text,
+          email: emailController.text,
+          password: passwordController.text,
+          uid: uid,
+        );
+
+        // Show success message
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text('User Added.'),
           ),
         );
 
-        // Navigate back to the previous page
-        Navigator.pop(context);
-
-        // Optionally, show a success message or navigate to another screen
+        // Clear form fields
+        firstNameController.clear();
+        lastNameController.clear();
+        ageController.clear();
+        idController.clear();
+        roleController.clear();
+        emailController.clear();
+        passwordController.clear();
+        setState(() {
+          imageFile = null;
+        });
       } catch (error) {
         // Handle error
         print('Error adding user: $error');
@@ -112,7 +130,7 @@ class _AddEmployeePageState extends State<AddEmployeePage> {
         );
       }
     } else {
-      // Show error message if any form is not filled
+      // Show error message if any form field is not filled
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Please capture photo or complete the form'),
@@ -120,6 +138,20 @@ class _AddEmployeePageState extends State<AddEmployeePage> {
       );
     }
   }
+
+  @override
+  void dispose() {
+    emailController.dispose();
+    passwordController.dispose();
+    firstNameController.dispose();
+    idController.dispose();
+    lastNameController.dispose();
+    idController.dispose();
+    roleController.dispose();
+    ageController.dispose();
+    super.dispose();
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -137,31 +169,10 @@ class _AddEmployeePageState extends State<AddEmployeePage> {
                 child: Text("Pilih foto"),
               ),
 
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 25.0),
-                child: GestureDetector(
-                  onTap: _openCamera, // Open camera when icon is tapped
-                  child: Container(
-                    width: 400,
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.blue),
-                      shape: BoxShape.rectangle,
-                    ),
-                    child: imageFile != null // Show captured image if available
-                        ? Image.file(
-                      imageFile!,
-                      width: 150,
-                      height: 150,
-                      fit: BoxFit.cover,
-                    )
-                        : const Icon(
-                      Icons.camera_alt,
-                      size: 150,
-                      color: Colors.blue,
-                    ),
-                  ),
-                ),
-              ),
+              AddImage(
+                  imageFile: imageFile,
+                  onTap: _openCamera),
+
 
               const SizedBox(height: 15),
 
