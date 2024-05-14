@@ -94,7 +94,7 @@ class SettingPage extends StatelessWidget {
             child: Column(
 
               children: [
-                SizedBox(height: 15),
+                const SizedBox(height: 15),
                 profilePictureUrl.isNotEmpty
                     ? Stack(
                   children: [
@@ -105,7 +105,7 @@ class SettingPage extends StatelessWidget {
                         backgroundImage: NetworkImage(profilePictureUrl),
                       ),
                     ),
-                    Positioned(
+                    const Positioned(
                       bottom: 0,
                       right: 10,
                       child: Icon(

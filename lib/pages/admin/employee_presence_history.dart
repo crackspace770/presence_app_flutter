@@ -1,20 +1,18 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
-class PresenceHistory extends StatelessWidget {
+class EmployeePresenceHistory extends StatelessWidget {
 
-  final presence;
+  final DocumentSnapshot presence;
 
-  const PresenceHistory({super.key, required this.presence});
+  const EmployeePresenceHistory({super.key, required this.presence});
 
   @override
   Widget build(BuildContext context) {
-
-    DocumentSnapshot document = presence as DocumentSnapshot<Object?>;
-    Map<String, dynamic> data = document.data() as Map<String, dynamic>;
+    Map<String, dynamic> data = presence.data() as Map<String, dynamic>;
     String presenceStatus = data['status'].toString();
-    String presenceTime = data['timestamp'].toString() ;
-    String presenceDate = data['date'].toString() ;
+    String presenceTime = data['timestamp'].toString();
+    String presenceDate = data['date'].toString();
 
     return Padding(
       padding: const EdgeInsets.only(left: 25.0, right: 25.0, bottom: 10),
@@ -29,12 +27,11 @@ class PresenceHistory extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Icon(Icons.circle,color: _getStatusColor(presenceStatus)),
+              Icon(Icons.circle, color: _getStatusColor(presenceStatus)),
               Text(presenceStatus),
-              Text(presenceTime.toString()),
-              Text(presenceDate.toString())
+              Text(presenceTime),
+              Text(presenceDate),
             ],
-
           ),
         ),
       ),
@@ -43,15 +40,14 @@ class PresenceHistory extends StatelessWidget {
 }
 
 Color _getStatusColor(String status) {
-  // Return color based on status
   switch (status) {
     case 'Check In':
-      return Colors.green; // Green color for Check In
+      return Colors.green;
     case 'Check Out':
-      return Colors.blue; // Blue color for Check Out
+      return Colors.blue;
     case 'Izin':
-      return Colors.red; // Red color for Izin
+      return Colors.red;
     default:
-      return Colors.black; // Default color
+      return Colors.black;
   }
 }

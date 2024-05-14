@@ -14,6 +14,8 @@ class FirestoreService{
   late CollectionReference presences;
   late CollectionReference userPresences;
 
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
   final FirebaseStorage _storage = FirebaseStorage.instance;
   final CollectionReference user = FirebaseFirestore.instance.collection('users');
 
@@ -72,6 +74,24 @@ class FirestoreService{
     init();
   }
 
+  Future<DocumentSnapshot> getUserByUid(String uid) async {
+    try {
+      DocumentSnapshot userSnapshot = await _firestore.collection('users').doc(uid).get();
+      if (userSnapshot.exists) {
+        return userSnapshot;
+      } else {
+        throw Exception('User with UID $uid not found.');
+      }
+    } catch (error) {
+      print('Error retrieving user data: $error');
+      throw error;
+    }
+  }
+
+  Stream<QuerySnapshot> getUserPresences(String uid) {
+    return _firestore.collection('users').doc(uid).collection('presence').orderBy('timestamp', descending: true).snapshots();
+  }
+
   Future<void> init() async {
     String? uid = FirebaseAuth.instance.currentUser?.uid;
     if (uid != null) {
@@ -86,6 +106,22 @@ class FirestoreService{
       // Handle the case where the user is not authenticated
     }
   }
+
+  Future<void> presenceHistory() async{
+    String? uid = _usersCollection as String?;
+    if (uid != null) {
+      QuerySnapshot userDocs = await FirebaseFirestore.instance.collection('users').where('uid', isEqualTo: uid).get();
+      if (userDocs.docs.isNotEmpty) {
+        DocumentSnapshot userDoc = userDocs.docs.first;
+        userPresences = userDoc.reference.collection('presence');
+      } else {
+        // Handle case when user document is not found
+      }
+    } else {
+      // Handle the case where the user is not authenticated
+    }
+  }
+
 
   Future<void> addUser({
     required String uid,
@@ -107,8 +143,6 @@ class FirestoreService{
 
       // Get the current timestamp
       DateTime now = DateTime.now();
-
-
 
       // Add presence data to Firestore with the photo URL
       await user.add({
@@ -201,19 +235,6 @@ class FirestoreService{
     }
   }
 
-  Future<DocumentSnapshot> getUserByUid(String uid) async {
-    try {
-      DocumentSnapshot userSnapshot = await _usersCollection.doc(uid).get();
-      if (userSnapshot.exists) {
-        return userSnapshot;
-      } else {
-        throw Exception('User with UID $uid not found.');
-      }
-    } catch (error) {
-      print('Error retrieving user data: $error');
-      throw error;
-    }
-  }
 
 
   Stream<QuerySnapshot> getPresences() {

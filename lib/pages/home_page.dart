@@ -1,9 +1,7 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:presence_app/pages/presence_history_page.dart';
 import 'package:presence_app/pages/presence_page.dart';
 import 'package:presence_app/pages/setting_page.dart';
-import 'package:presence_app/service/firestore.dart';
 
 import '../service/auth_service.dart';
 
@@ -33,12 +31,12 @@ class _HomePageState extends State<HomePage> {
   ];
 
   final List<BottomNavigationBarItem> _bottomNavBarItems = [
-    BottomNavigationBarItem(
+    const BottomNavigationBarItem(
       icon: Icon( Icons.home),
       label: "Home",
     ),
 
-    BottomNavigationBarItem(
+    const BottomNavigationBarItem(
       icon: Icon(Icons.person),
       label: "Profile",
     ),
