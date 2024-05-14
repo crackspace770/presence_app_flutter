@@ -99,9 +99,7 @@ class EmployeeDetailPage extends StatelessWidget {
                       ),
                     ),
                   ),
-
                   const SizedBox(height: 30),
-
                 ],
               ),
             );
@@ -111,4 +109,3 @@ class EmployeeDetailPage extends StatelessWidget {
     );
   }
 }
-

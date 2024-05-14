@@ -41,7 +41,12 @@ class _EmployeePageState extends State<EmployeePage> {
             if(snapshot.hasData) {
               List userList = snapshot.data!.docs;
               //display as list
-              return ListView.builder(
+              return GridView.builder(
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2, // Number of items per row
+                    crossAxisSpacing: 2, // Spacing between items horizontally
+                    mainAxisSpacing: 4, // Spacing between items vertically
+                  ),
                   itemCount: userList.length,
                   itemBuilder: (context, index) {
 

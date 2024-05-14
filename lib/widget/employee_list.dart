@@ -12,11 +12,11 @@ class EmployeeList extends StatelessWidget {
     final data = employee.data() as Map<String, dynamic>;
     final String userName = data['first_name'];
     final String profilePic = data['photo_profile'];
-    final String role = data['role'];
+    final String idEmployee = data['id_pegawai'];
     final String employeeUid = employee.id; // Assuming the DocumentSnapshot's id is the employee's uid
 
     return Padding(
-      padding: const EdgeInsets.only(left: 25, right: 25, bottom: 10),
+      padding: const EdgeInsets.only(top: 25, right: 8, left: 8, bottom: 8),
       child: GestureDetector(
         onTap: () {
           Navigator.push(
@@ -34,7 +34,17 @@ class EmployeeList extends StatelessWidget {
           ),
           child: Column(
             children: [
+
+              const SizedBox(height: 15),
+
+              if (profilePic.isNotEmpty)
+                Image.network(profilePic,
+                height: 80,
+                  width: 80,
+                ),
+
               Text(userName),
+              Text(idEmployee)
               // Display other employee details as needed
             ],
           ),

@@ -146,7 +146,7 @@ class FirestoreService{
 
       // Add presence data to Firestore with the photo URL
       await user.add({
-        'id': id,
+        'id_pegawai': id,
         'first_name': firstName,
         'last_name':lastName,
         'role': role,
@@ -185,7 +185,7 @@ class FirestoreService{
 
       // Add presence data to Firestore with the photo URL
       await presences.add({
-        'id': id,
+        'id_pegawai': id,
         'name': name,
         'info': info,
         'photo': photoURL,
