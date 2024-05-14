@@ -17,7 +17,7 @@ class FirestoreService{
   final FirebaseStorage _storage = FirebaseStorage.instance;
   final CollectionReference user = FirebaseFirestore.instance.collection('users');
 
-  
+  final CollectionReference _usersCollection = FirebaseFirestore.instance.collection('users');
 
   Future<String> _uploadImageToStorage(File imageFile, String userId) async {
     try {
@@ -201,6 +201,19 @@ class FirestoreService{
     }
   }
 
+  Future<DocumentSnapshot> getUserByUid(String uid) async {
+    try {
+      DocumentSnapshot userSnapshot = await _usersCollection.doc(uid).get();
+      if (userSnapshot.exists) {
+        return userSnapshot;
+      } else {
+        throw Exception('User with UID $uid not found.');
+      }
+    } catch (error) {
+      print('Error retrieving user data: $error');
+      throw error;
+    }
+  }
 
 
   Stream<QuerySnapshot> getPresences() {

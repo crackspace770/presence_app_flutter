@@ -40,7 +40,6 @@ class MyApp extends StatelessWidget {
         SettingPage.routeName: (context) => const SettingPage(),
         PresencePage.routeName: (context) => const PresencePage(),
         AddEmployeePage.routeName: (context) => const AddEmployeePage(),
-        EmployeeDetailPage.routeName: (context) => const EmployeeDetailPage()
       },
       //home: const MainPage(),
     );
