@@ -4,10 +4,58 @@ import 'package:flutter/material.dart';
 import '../../service/firestore.dart';
 import 'employee_presence_history.dart';
 
-class EmployeeDetailPage extends StatelessWidget {
+class EmployeeDetailPage extends StatefulWidget {
   final String employeeUid;
 
   const EmployeeDetailPage({Key? key, required this.employeeUid}) : super(key: key);
+
+  @override
+  State<EmployeeDetailPage> createState() => _EmployeeDetailPageState();
+}
+
+class _EmployeeDetailPageState extends State<EmployeeDetailPage> {
+  final FirestoreService firestore = FirestoreService();
+
+  void deleteUser() async{
+
+    try {
+      await firestore.deleteUser(widget.employeeUid);
+      Navigator.pop(context); // Go back after deletion
+    } catch (error) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Failed to delete user: $error')),
+      );
+    }
+
+  }
+
+  // Function to show the confirmation dialog
+  void _showDeleteConfirmationDialog() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Delete User'),
+          content: const Text('Are you sure you want to delete this user?'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Dismiss the dialog
+              },
+              child: const Text('No'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Dismiss the dialog
+                deleteUser(); // Call deleteUser function
+              },
+              child: const Text('Yes'),
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +64,7 @@ class EmployeeDetailPage extends StatelessWidget {
         title: const Text('Employee Detail'),
       ),
       body: FutureBuilder<DocumentSnapshot>(
-        future: FirestoreService().getUserByUid(employeeUid),
+        future: FirestoreService().getUserByUid(widget.employeeUid),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
@@ -67,8 +115,8 @@ class EmployeeDetailPage extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 10),
                     child: Container(
-                      width: 400,
-                      height: 500,
+                      width: 420,
+                      height: 350,
                       decoration: BoxDecoration(
                         border: Border.all(color: Colors.grey),
                         shape: BoxShape.rectangle,
@@ -76,7 +124,7 @@ class EmployeeDetailPage extends StatelessWidget {
                       child: Padding(
                         padding: const EdgeInsets.only(top: 10.0),
                         child: StreamBuilder<QuerySnapshot>(
-                          stream: FirestoreService().getUserPresences(employeeUid),
+                          stream: FirestoreService().getUserPresences(widget.employeeUid),
                           builder: (context, snapshot) {
                             if (snapshot.connectionState == ConnectionState.waiting) {
                               return const Center(child: CircularProgressIndicator());
@@ -99,7 +147,19 @@ class EmployeeDetailPage extends StatelessWidget {
                       ),
                     ),
                   ),
-                  const SizedBox(height: 30),
+                  const SizedBox(height: 10),
+                  ElevatedButton(
+                    onPressed: _showDeleteConfirmationDialog,
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.red, // Button color
+                    ),
+                    child: const Text("Delete User",
+                    style: TextStyle(
+                      color: Colors.white
+                    ),
+                    ),
+                  ),
+                  const SizedBox(height: 10,)
                 ],
               ),
             );

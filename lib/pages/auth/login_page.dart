@@ -54,26 +54,26 @@ class _LoginPageState extends State<LoginPage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(
+                const Icon(
                   Icons.apple_rounded,
                   size: 70,
                 ),
-                SizedBox(height:40),
-                Text("Hello!",
+                const SizedBox(height:40),
+                const Text("Hello!",
                   style: TextStyle(
                       fontSize: 32,
                       fontWeight: FontWeight.bold
                   ),
                 ),
 
-                SizedBox(height: 10),
-                Text("Please Login to your account!",
+                const SizedBox(height: 10),
+                const Text("Please Login to your account!",
                   style: TextStyle(
                     fontSize: 18,
 
                   ),
                 ),
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
 
                 //email textfield
                 Padding(
@@ -88,7 +88,7 @@ class _LoginPageState extends State<LoginPage> {
                       padding: const EdgeInsets.only(left: 20),
                       child: TextField(
                         controller: emailController,
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                             border: InputBorder.none,
                             hintText: 'Email'
                         ),
@@ -96,7 +96,7 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ),
                 ),
-                SizedBox(height: 15),
+                const SizedBox(height: 15),
 
                 //password textfield
                 Padding(
@@ -113,7 +113,7 @@ class _LoginPageState extends State<LoginPage> {
                       child: TextField(
                         controller: passwordController,
                         obscureText: true,
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                             border: InputBorder.none,
                             hintText: 'Password'
                         ),
@@ -122,7 +122,7 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ),
 
-                SizedBox(height: 15),
+                const SizedBox(height: 15),
 
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 25.0),
@@ -133,8 +133,8 @@ class _LoginPageState extends State<LoginPage> {
                           color: Colors.blue,
                           borderRadius: BorderRadius.circular(16)
                       ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(20.0),
+                      child: const Padding(
+                        padding: EdgeInsets.all(20.0),
                         child: Center(
                           child: Text("Login",
                             style: TextStyle(
@@ -147,18 +147,18 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ),
                 ),
-                SizedBox(height: 15),
+                const SizedBox(height: 15),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 25.0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text('Not a member?'),
-                      SizedBox(width: 5),
+                      const Text('Not a member?'),
+                      const SizedBox(width: 5),
 
                       GestureDetector(
                         onTap: widget.showRegisterPage,
-                        child: Text('Register now!',
+                        child: const Text('Register now!',
                           style: TextStyle(
                               color: Colors.blue
                           ),

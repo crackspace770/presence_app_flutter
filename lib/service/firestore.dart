@@ -252,6 +252,11 @@ class FirestoreService{
     return Users(name: userData['first name'], age: userData['age']);
   }
 
+  // Delete user by UID
+  Future<void> deleteUser(String employeeUid) {
+    return _firestore.collection('users').doc(employeeUid).delete();
+  }
+
 
 
 }
