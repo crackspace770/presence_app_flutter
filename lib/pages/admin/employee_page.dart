@@ -34,13 +34,14 @@ class _EmployeePageState extends State<EmployeePage> {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endContained,
       body: Padding(
-        padding: EdgeInsets.symmetric(vertical: 10),
+        padding: const EdgeInsets.symmetric(vertical: 10),
         child: StreamBuilder<QuerySnapshot> (
           stream: firestoreService.getUserStream(),
           builder: (context, snapshot) {
             if(snapshot.hasData) {
               List userList = snapshot.data!.docs;
               //display as list
+
               return GridView.builder(
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2, // Number of items per row

@@ -38,10 +38,10 @@ class EmployeeList extends StatelessWidget {
               const SizedBox(height: 15),
 
               if (profilePic.isNotEmpty)
-                Image.network(profilePic,
-                height: 80,
-                  width: 80,
-                ),
+           CircleAvatar(
+          radius: 50,
+           backgroundImage: NetworkImage(profilePic),
+            ),
 
               Text(userName),
               Text(idEmployee)

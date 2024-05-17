@@ -2,7 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:presence_app/widget/presence_history.dart';
 
-import '../service/firestore.dart';
+import '../../service/firestore.dart';
+
 
 class PresenceHistoryPage extends StatefulWidget {
   static const routeName ="/presence_history_page";

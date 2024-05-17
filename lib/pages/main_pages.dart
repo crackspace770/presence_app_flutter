@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import '../service/auth_service.dart';
 import 'admin/admin_page.dart';
 import 'auth/auth_page.dart';
-import 'home_page.dart';
+import 'employee/home_page.dart';
 
 class MainPage extends StatefulWidget {
   static const routeName="/main_page";

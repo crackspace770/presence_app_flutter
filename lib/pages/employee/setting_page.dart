@@ -70,7 +70,7 @@ class SettingPage extends StatelessWidget {
         // Query the collection based on the user's UID
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(
+            return const Center(
                 child: CircularProgressIndicator()
             );
           }
@@ -80,7 +80,7 @@ class SettingPage extends StatelessWidget {
           }
 
           if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-            return Center(child: Text('No data found'));
+            return const Center(child: Text('No data found'));
           }
 
           Map<String, dynamic>? userData = snapshot.data!.docs.first.data() as Map<String, dynamic>?;

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:presence_app/pages/presence_history_page.dart';
-import 'package:presence_app/pages/presence_page.dart';
-import 'package:presence_app/pages/setting_page.dart';
+import 'package:presence_app/pages/employee/presence_history_page.dart';
+import 'package:presence_app/pages/employee/presence_page.dart';
+import 'package:presence_app/pages/employee/setting_page.dart';
 
-import '../service/auth_service.dart';
+import '../../service/auth_service.dart';
 
 class HomePage extends StatefulWidget {
 

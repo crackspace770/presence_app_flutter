@@ -1,11 +1,11 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:presence_app/pages/admin/add_employee_page.dart';
-import 'package:presence_app/pages/admin/employee_detail_page.dart';
 import 'package:presence_app/pages/main_pages.dart';
-import 'package:presence_app/pages/presence_history_page.dart';
-import 'package:presence_app/pages/presence_page.dart';
-import 'package:presence_app/pages/setting_page.dart';
+import 'package:presence_app/pages/employee/presence_history_page.dart';
+import 'package:presence_app/pages/employee/presence_page.dart';
+import 'package:presence_app/pages/employee/setting_page.dart';
+
 
 import 'firebase_options.dart';
 

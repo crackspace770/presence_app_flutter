@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:presence_app/pages/admin/admin_home_page.dart';
 import 'package:presence_app/service/firestore.dart';
 import 'package:presence_app/widget/employee_list.dart';
 
@@ -23,6 +24,7 @@ class _AdminPageState extends State<AdminPage> {
   int _bottomNavIndex = 0;
 
   final List<Widget> _listWidget = [
+    const AdminHomePage(),
     const EmployeePage(),
     const AdminSettingPage(),
   ];
@@ -31,6 +33,11 @@ class _AdminPageState extends State<AdminPage> {
     const BottomNavigationBarItem(
       icon: Icon( Icons.home),
       label: "Home",
+    ),
+
+    const BottomNavigationBarItem(
+      icon: Icon( Icons.people),
+      label: "Employee",
     ),
 
     const BottomNavigationBarItem(
