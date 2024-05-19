@@ -144,6 +144,7 @@ class FirestoreService{
       // Get the current timestamp
       DateTime now = DateTime.now();
 
+
       // Add presence data to Firestore with the photo URL
       await user.add({
         'id_pegawai': id,
@@ -169,6 +170,7 @@ class FirestoreService{
     required String id,
     required String info,
     required String name,
+
   }) async {
     try {
       String userId = FirebaseAuth.instance.currentUser!.uid;
@@ -181,7 +183,10 @@ class FirestoreService{
 
       // Format the timestamp
       String formattedTime = DateFormat.Hm().format(now); // HH:MM format
-      String formattedDate = DateFormat('dd.MM.yy').format(now); // DD:MM:YY format
+      String formattedDate = DateFormat('EEEE, dd-MMM-yyyy').format(now);// DD:MM:YY format
+
+      // Determine the state based on check-in/check-out times
+      String state = _determinePresenceState(status, now);
 
       // Add presence data to Firestore with the photo URL
       await presences.add({
@@ -192,6 +197,7 @@ class FirestoreService{
         'status': status,
         'timestamp': formattedTime,
         'date': formattedDate,
+        'state': state,
       });
     } catch (error) {
       print('Error adding presence: $error');
@@ -217,7 +223,10 @@ class FirestoreService{
 
       // Format the timestamp
       String formattedTime = DateFormat.Hm().format(now); // HH:MM format
-      String formattedDate = DateFormat('dd.MM.yy').format(now); // DD:MM:YY format
+      String formattedDate = DateFormat('EEEE, dd-MMM-yyyy').format(now); // DD:MM:YY format
+
+      // Determine the state based on check-in/check-out times
+      String state = _determinePresenceState(status, now);
 
       // Add presence data to Firestore with the photo URL
       await userPresences.add({
@@ -228,6 +237,7 @@ class FirestoreService{
         'status': status,
         'timestamp': formattedTime,
         'date': formattedDate,
+        'state': state,
       });
     } catch (error) {
       print('Error adding presence: $error');
@@ -235,6 +245,25 @@ class FirestoreService{
     }
   }
 
+  String _determinePresenceState(String status, DateTime now) {
+    DateTime checkInTime = DateTime(now.year, now.month, now.day, 8, 0); // 08:00
+    DateTime checkOutTime = DateTime(now.year, now.month, now.day, 17, 0); // 17:00
+
+    if (status == 'Check In') {
+      if (now.isAfter(checkInTime)) {
+        return "Late";
+      } else {
+        return "On Time";
+      }
+    } else if (status == 'Check Out') {
+      if (now.isBefore(checkOutTime)) {
+        return "Early";
+      } else {
+        return "On Time";
+      }
+    }
+    return "Unknown";
+  }
 
 
   Stream<QuerySnapshot> getPresences() {

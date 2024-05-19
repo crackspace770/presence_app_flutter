@@ -40,6 +40,7 @@ class _PresenceListState extends State<PresenceList> {
 
                   // Display as list
                   return ListView.builder(
+                    shrinkWrap: true,
                     itemCount: presenceList.length,
                     itemBuilder: (context, index) {
                       var presence = presenceList[index];

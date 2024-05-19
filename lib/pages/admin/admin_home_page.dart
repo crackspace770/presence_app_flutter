@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:presence_app/widget/presence_list.dart';
 
 import '../../service/firestore.dart';
-import '../../widget/presence_history.dart';
 
 class AdminHomePage extends StatefulWidget {
   const AdminHomePage({super.key});
@@ -93,23 +92,16 @@ class _AdminHomePageState extends State<AdminHomePage> {
                   child: const Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-
                       Padding(
-                        padding: EdgeInsets.only(left: 15.0,top: 15),
-                        child: Text("Recent Activity",
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold
-                          ),),
+                        padding: EdgeInsets.only(left: 15.0, top: 15),
+                        child: Text(
+                          "Recent Activity",
+                          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                        ),
                       ),
-
-
-            
-                      PresenceList(),
-            
+                      Expanded(child: PresenceList()), // Ensure the PresenceList takes available space
                     ],
                   ),
-            
                 ),
             
               ],
@@ -119,4 +111,5 @@ class _AdminHomePageState extends State<AdminHomePage> {
       ),
     );
   }
+
 }

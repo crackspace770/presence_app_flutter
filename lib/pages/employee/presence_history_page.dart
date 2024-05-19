@@ -1,12 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:presence_app/widget/presence_history.dart';
 
 import '../../service/firestore.dart';
+import '../../widget/presence_list.dart';
 
 
 class PresenceHistoryPage extends StatefulWidget {
-  static const routeName ="/presence_history_page";
+  static const routeName = "/presence_history_page";
 
   const PresenceHistoryPage({super.key});
 
@@ -15,63 +17,89 @@ class PresenceHistoryPage extends StatefulWidget {
 }
 
 class _PresenceHistoryPageState extends State<PresenceHistoryPage> {
-
+  final User? user = FirebaseAuth.instance.currentUser;
   final FirestoreService _firestoreService = FirestoreService();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 15),
-        child: FutureBuilder<void>(
-          future: _firestoreService.init(),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              // Show a loading indicator while waiting for initialization
-              return const Center(child: CircularProgressIndicator());
-            } else if (snapshot.hasError) {
-              // Handle error if initialization fails
-              return Center(child: Text('Error: ${snapshot.error}'));
-            } else {
-              // If initialization is successful, show the UI
-              return StreamBuilder<QuerySnapshot>(
-                stream: _firestoreService.getPresences(),
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    List presenceList = snapshot.data!.docs;
+      backgroundColor: Colors.grey.shade100,
+      body: FutureBuilder<QuerySnapshot>(
+        future: FirebaseFirestore.instance.collection('users').where('uid', isEqualTo: user?.uid).get(),
+        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          }
 
-                    // Display as list
-                    return ListView.builder(
-                      itemCount: presenceList.length,
-                      itemBuilder: (context, index) {
-                        var presence = presenceList[index];
-                        return PresenceHistory(presence: presence);
-                      },
-                    );
-                  } else {
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 10),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: Colors.grey,
-                          borderRadius: BorderRadius.circular(16),
+          if (snapshot.hasError) {
+            return Center(child: Text('Error: ${snapshot.error}'));
+          }
+
+          if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+            return const Center(child: Text('No data found'));
+          }
+
+          Map<String, dynamic>? userData = snapshot.data!.docs.first.data() as Map<String, dynamic>?;
+
+          String firstName = userData?['first_name'] ?? 'Unknown';
+          String idPegawai = userData?['id_pegawai'] ?? 'Unknown';
+          String lastName = userData?['last_name'] ?? 'Unknown';
+          String profilePic = userData?['photo_profile'] ?? 'Unknown';
+
+          return SingleChildScrollView(
+            child: Column(
+              children: [
+                const SizedBox(height: 15),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const SizedBox(width: 5),
+                          Text(
+                            "Hello, $firstName",
+                            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                          ),
+                          Text(idPegawai),
+                        ],
+                      ),
+                      if (profilePic.isNotEmpty)
+                        CircleAvatar(
+                          radius: 30,
+                          backgroundImage: NetworkImage(profilePic),
                         ),
-                        child: const Padding(
-                          padding: EdgeInsets.only(left: 25.0, bottom: 25.0, top: 25.0),
-                          child: Text("No Data"),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 15),
+                Container(
+                  color: Colors.white,
+                  width: 500,
+                  height: 300,
+                  child: const Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.only(left: 15.0, top: 15),
+                        child: Text(
+                          "Recent Activity",
+                          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                         ),
                       ),
-                    );
-                  }
-                },
-              );
-            }
-          },
-        ),
+                      Expanded(child: PresenceList()), // Ensure the PresenceList takes available space
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          );
+        },
       ),
     );
   }
-
 }
 
 
