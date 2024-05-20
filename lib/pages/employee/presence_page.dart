@@ -49,6 +49,9 @@ class _PresencePageState extends State<PresencePage> {
         // Extract first name and ID from user document
         Map<String, dynamic>? userData = userDocs.docs.first.data() as Map<String, dynamic>?;
 
+        String firstName = userData?['first_name'] ?? '';
+        String lastName = userData?['last_name'] ?? '';
+
         // Set first name and ID to controllers
         nameController.text = userData?['first_name'] ?? '';
         idController.text = userData?['id_pegawai'] ?? '';
@@ -202,20 +205,12 @@ class _PresencePageState extends State<PresencePage> {
                   ),
                 ),
               ),
-              const SizedBox(height: 10),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 25.0),
-                child: Text(
-                  "Presence Status: ${selectedStatus ?? 'Select a status'}",
-                  style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                ),
-              ),
 
               const SizedBox(height: 15),
 
               MyEditText(
                   controller: keteranganController,
-                  hintText: hintText,
+                  hintText: "Keterangan",
                   obscureText: false
               ),
 

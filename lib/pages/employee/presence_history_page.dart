@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:presence_app/widget/presence_history.dart';
+import 'package:presence_app/widget/time_shift_box.dart';
 
 import '../../service/firestore.dart';
 import '../../widget/presence_list.dart';
@@ -43,7 +43,7 @@ class _PresenceHistoryPageState extends State<PresenceHistoryPage> {
 
           String firstName = userData?['first_name'] ?? 'Unknown';
           String idPegawai = userData?['id_pegawai'] ?? 'Unknown';
-          String lastName = userData?['last_name'] ?? 'Unknown';
+          //String lastName = userData?['last_name'] ?? 'Unknown';
           String profilePic = userData?['photo_profile'] ?? 'Unknown';
 
           return SingleChildScrollView(
@@ -74,23 +74,36 @@ class _PresenceHistoryPageState extends State<PresenceHistoryPage> {
                     ],
                   ),
                 ),
+
+
                 const SizedBox(height: 15),
-                Container(
-                  color: Colors.white,
-                  width: 500,
-                  height: 300,
-                  child: const Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.only(left: 15.0, top: 15),
-                        child: Text(
-                          "Recent Activity",
-                          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+
+                const TimeShiftBox(),
+
+                const SizedBox(height: 15),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                  child: Container(
+                    width: 450,
+                    height: 400,
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(16),
+                        border: Border.all(color: Colors.black)
+                    ),
+                    child: const Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.only(left: 15.0, top: 15),
+                          child: Text(
+                            "Recent Activity",
+                            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                          ),
                         ),
-                      ),
-                      Expanded(child: PresenceList()), // Ensure the PresenceList takes available space
-                    ],
+                        Expanded(child: PresenceList()), // Ensure the PresenceList takes available space
+                      ],
+                    ),
                   ),
                 ),
               ],

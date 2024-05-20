@@ -246,8 +246,9 @@ class FirestoreService{
   }
 
   String _determinePresenceState(String status, DateTime now) {
-    DateTime checkInTime = DateTime(now.year, now.month, now.day, 8, 0); // 08:00
+    DateTime checkInTime = DateTime(now.year, now.month, now.day, 8, 15); // 08:00
     DateTime checkOutTime = DateTime(now.year, now.month, now.day, 17, 0); // 17:00
+    DateTime overTime = DateTime(now.year,now.month, now.day, 18,0); //18:00
 
     if (status == 'Check In') {
       if (now.isAfter(checkInTime)) {
@@ -258,7 +259,9 @@ class FirestoreService{
     } else if (status == 'Check Out') {
       if (now.isBefore(checkOutTime)) {
         return "Early";
-      } else {
+      } else if (now.isAfter(overTime)) {
+        return "Overtime";
+      } else{
         return "On Time";
       }
     }

@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class EmployeePresenceHistory extends StatelessWidget {
 
@@ -9,10 +10,13 @@ class EmployeePresenceHistory extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Map<String, dynamic> data = presence.data() as Map<String, dynamic>;
+    DocumentSnapshot document = presence as DocumentSnapshot<Object?>;
+    Map<String, dynamic> data = document.data() as Map<String, dynamic>;
     String presenceStatus = data['status'].toString();
     String presenceTime = data['timestamp'].toString();
     String presenceDate = data['date'].toString();
+    String presenceState = data['state'].toString();
+
 
     return Padding(
       padding: const EdgeInsets.only(left: 25.0, right: 25.0, bottom: 10),
@@ -27,10 +31,24 @@ class EmployeePresenceHistory extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Icon(Icons.circle, color: _getStatusColor(presenceStatus)),
-              Text(presenceStatus),
-              Text(presenceTime),
-              Text(presenceDate),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Text(presenceStatus),
+                      Icon(Icons.circle, color: _getStatusColor(presenceState)),
+                    ],
+                  ),
+                  Text(presenceDate.toString()),
+                ],
+              ),
+              Column(
+                children: [
+                  Text(presenceTime.toString()),
+                  Text(presenceState), // Display the presence state
+                ],
+              )
             ],
           ),
         ),
@@ -40,14 +58,16 @@ class EmployeePresenceHistory extends StatelessWidget {
 }
 
 Color _getStatusColor(String status) {
+  // Return color based on status
   switch (status) {
-    case 'Check In':
-      return Colors.green;
-    case 'Check Out':
-      return Colors.blue;
-    case 'Izin':
-      return Colors.red;
+    case 'On Time':
+      return Colors.green; // Green color for Check In
+    case 'Early':
+      return Colors.blue; // Blue color for Check Out
+    case 'Late':
+      return Colors.red; // Red color for Izin
     default:
-      return Colors.black;
+      return Colors.black; // Default color
   }
 }
+

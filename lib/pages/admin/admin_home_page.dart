@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:presence_app/widget/presence_list.dart';
 
 import '../../service/firestore.dart';
+import '../../widget/time_shift_box.dart';
 
 class AdminHomePage extends StatefulWidget {
   const AdminHomePage({super.key});
@@ -85,22 +86,33 @@ class _AdminHomePageState extends State<AdminHomePage> {
 
                 const SizedBox(height: 15),
 
-                Container(
-                  color: Colors.white,
-                  width: 500,
-                  height: 300,
-                  child: const Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.only(left: 15.0, top: 15),
-                        child: Text(
-                          "Recent Activity",
-                          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                const TimeShiftBox(),
+
+                const SizedBox(height: 15),
+
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                  child: Container(
+                    width: 450,
+                    height: 400,
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(16),
+                        border: Border.all(color: Colors.black)
+                    ),
+                    child: const Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.only(left: 15.0, top: 15),
+                          child: Text(
+                            "Recent Activity",
+                            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                          ),
                         ),
-                      ),
-                      Expanded(child: PresenceList()), // Ensure the PresenceList takes available space
-                    ],
+                        Expanded(child: PresenceList()), // Ensure the PresenceList takes available space
+                      ],
+                    ),
                   ),
                 ),
             

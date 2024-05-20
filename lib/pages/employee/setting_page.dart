@@ -89,6 +89,9 @@ class SettingPage extends StatelessWidget {
           String idPegawai = userData?['id_pegawai'] ?? 'Unknown';
           String lastName = userData?['last_name'] ?? 'Unknown';
           String profilePictureUrl = userData?['photo_profile']?? 'Unknown';
+          String email = userData?['email']?? 'Unknown' ;
+          int age = userData?['age']?? 'Unknown';
+          String role = userData?['role']?? 'Unknown';
 
           return Center(
             child: Column(
@@ -129,6 +132,95 @@ class SettingPage extends StatelessWidget {
                 const SizedBox(height: 15),
                 Text(idPegawai), // Display user's ID
                 const SizedBox(height: 15),
+
+                Container(
+                  height: 400,
+                  width:350,
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(16),
+                      border: Border.all(color: Colors.black)
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const SizedBox(height: 15,),
+                      const Center(
+                        child: Text("Basic Info",
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 25
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 25),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 15.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              children: [
+                                const Text("Fullname:"),
+                                Text("$firstName $lastName",
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.bold
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 10),
+                            Row(
+                              children: [
+                                const Text("ID:"),
+                                Text(idPegawai,
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.bold
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 10),
+                            Row(
+                              children: [
+                                const Text("Role:"),
+                                Text(role,
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.bold
+                                ),),
+                              ],
+                            ),
+                            const SizedBox(height: 10),
+                            Row(
+                              children: [
+                                const Text("Email:"),
+                                Text(email,
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.bold
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 10),
+                            Row(
+                              children: [
+                                const Text("Age:"),
+                                Text(age.toString(),
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.bold
+                                  ),
+                                ),
+                              ],
+                            )
+                          ],
+                        ),
+                      ),
+
+                    ],
+                  ),
+
+                ),
+
               ],
             ),
           );

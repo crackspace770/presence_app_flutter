@@ -17,12 +17,6 @@ class PresenceHistory extends StatelessWidget {
     String presenceDate = data['date'].toString();
     String presenceState = data['state'].toString();
 
-    // Parse the presence time
-    DateTime parsedPresenceTime = DateFormat.Hm().parse(presenceTime);
-
-    // Define the threshold times
-    DateTime checkInThreshold = DateFormat.Hm().parse("08:00");
-    DateTime checkOutThreshold = DateFormat.Hm().parse("17:00");
 
 
     return Padding(

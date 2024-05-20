@@ -110,8 +110,12 @@ class _EmployeeDetailPageState extends State<EmployeeDetailPage> {
                   Text(idEmployee),
                   const SizedBox(height: 10),
                   Text('Role: $role'),
-                  const SizedBox(height: 10),
-                  const Text("Presence Histories"),
+                  const SizedBox(height: 15),
+                  const Text("Presence Histories:",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold
+                  ),
+                  ),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 10),
                     child: Container(
@@ -121,6 +125,7 @@ class _EmployeeDetailPageState extends State<EmployeeDetailPage> {
                         border: Border.all(color: Colors.grey),
                         shape: BoxShape.rectangle,
                       ),
+
                       child: Padding(
                         padding: const EdgeInsets.only(top: 10.0),
                         child: StreamBuilder<QuerySnapshot>(
